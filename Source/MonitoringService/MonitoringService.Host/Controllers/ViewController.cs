@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MonitoringService.Application.Processors;
 using MonitoringService.Contracts;
@@ -9,6 +10,7 @@ namespace MonitoringService.Host.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
+[EnableCors("AllowAllOrigins")]
 public class ViewController : ControllerBase
 {
     private readonly StatisticsProcessor _statisticsProcessor;
