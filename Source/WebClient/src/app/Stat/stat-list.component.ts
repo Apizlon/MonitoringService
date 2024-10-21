@@ -4,7 +4,8 @@ import { Stat } from "./stat.model";
 
 @Component({
     selector: 'app-stat-list',
-    templateUrl: './stat-list.component.html'
+    templateUrl: './stat-list.component.html',
+    styleUrls: ['./stat-list.component.css']
 })
 export class StatListComponent implements OnInit{
     stats:Stat[] = [];

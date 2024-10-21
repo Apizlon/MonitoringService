@@ -1,9 +1,18 @@
-<ul>
-    <li *ngFor="let stat of stats">
-        <p>ID : {{stat.id}}</p>
-        <p>Device Name : {{stat.deviceName}}</p>
-        <p>Operating System : {{stat.operatingSystem}}</p>
-        <p>Version : {{stat.version}}</p>
-        <p>Last Update : {{stat.lastUpdateDateTime | date:'short'}}</p>
-    </li>
-</ul>
+<table class="center-table">
+    <thead>
+        <tr>
+            <th>Имя узла</th>
+            <th>Дата последней статистики</th>
+            <th>Версия Client</th>
+            <th>Тип устройства</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let stat of stats">
+            <td>{{stat.deviceName}}</td>
+            <td>{{stat.lastUpdateDateTime | date:'short'}}</td>
+            <td>{{stat.version}}</td>
+            <td>{{stat.operatingSystem}}</td>
+        </tr>
+    </tbody>
+</table>
