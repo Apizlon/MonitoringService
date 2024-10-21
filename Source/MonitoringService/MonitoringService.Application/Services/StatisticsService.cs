@@ -2,6 +2,7 @@ using MonitoringService.Application.Exceptions;
 using MonitoringService.Application.Mappers;
 using MonitoringService.Application.Models;
 using MonitoringService.Application.Repositories;
+using MonitoringService.Application.Validator;
 using MonitoringService.Contracts;
 
 namespace MonitoringService.Application.Services;
@@ -17,6 +18,7 @@ public class StatisticsService : IStatisticsService
 
     public async Task<ulong> AddStatisticsAsync(StatisticsRequest statisticsRequest)
     {
+        statisticsRequest.Validate();
         return await _statisticsRepository.AddStatAsync(statisticsRequest.MapToDomain());
     }
 
@@ -44,7 +46,7 @@ public class StatisticsService : IStatisticsService
         {
             throw new StatisticsNotFoundException(id);
         }
-
+        statisticsRequest.Validate();
         await _statisticsRepository.UpdateStatAsync(id, statisticsRequest.MapToDomain());
     }
 

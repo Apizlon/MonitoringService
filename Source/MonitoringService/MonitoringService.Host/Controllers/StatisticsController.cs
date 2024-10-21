@@ -22,7 +22,7 @@ public class StatisticsController : ControllerBase
     {
         _logger.LogInformation("Запрос на добавление статистики устройства");
         var id = await _statisticsProcessor.AddStatisticsAsync(statisticsRequest);
-        _logger.LogInformation($"Устройство с именем {statisticsRequest.DeviceData.DeviceName} успешно добавлено, его id {id}.");
+        _logger.LogInformation($"Устройство с именем {statisticsRequest.DeviceName} успешно добавлено, его id {id}.");
         return Ok(id);
     }
 

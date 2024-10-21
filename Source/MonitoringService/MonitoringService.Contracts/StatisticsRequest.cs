@@ -4,6 +4,7 @@ namespace MonitoringService.Contracts;
 
 public class StatisticsRequest
 {
-    public DeviceData DeviceData { get; set; }
-    public AppData AppData { get; set; }
+    public string DeviceName { get; set; }
+    public string OperatingSystem { get; set; }
+    public string Version { get; set; }
 }
