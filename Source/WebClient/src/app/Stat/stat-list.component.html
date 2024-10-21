@@ -1,0 +1,9 @@
+<ul>
+    <li *ngFor="let stat of stats">
+        <p>ID : {{stat.id}}</p>
+        <p>Device Name : {{stat.deviceName}}</p>
+        <p>Operating System : {{stat.operatingSystem}}</p>
+        <p>Version : {{stat.version}}</p>
+        <p>Last Update : {{stat.lastUpdateDateTime | date:'short'}}</p>
+    </li>
+</ul>
