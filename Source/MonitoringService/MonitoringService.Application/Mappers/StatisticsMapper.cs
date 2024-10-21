@@ -9,9 +9,9 @@ public static class StatisticsMapper
     {
         return new Statistics()
         {
-            DeviceName = statisticsRequest.DeviceData.DeviceName,
-            OperatingSystem = statisticsRequest.DeviceData.OperatingSystem,
-            Version = statisticsRequest.AppData.Version,
+            DeviceName = statisticsRequest.DeviceName,
+            OperatingSystem = statisticsRequest.OperatingSystem,
+            Version = statisticsRequest.Version,
             LastUpdateDateTime = DateTime.Now
         };
     }
@@ -21,15 +21,9 @@ public static class StatisticsMapper
         return new StatisticsResponse()
         {
             Id = statistics.Id,
-            AppData = new Contracts.AppData()
-            {
-                Version = statistics.Version
-            },
-            DeviceData = new Contracts.DeviceData()
-            {
-                DeviceName = statistics.DeviceName,
-                OperatingSystem = statistics.OperatingSystem
-            },
+            DeviceName = statistics.DeviceName,
+            OperatingSystem = statistics.OperatingSystem,
+            Version = statistics.Version,
             LastUpdateDateTime = statistics.LastUpdateDateTime
         };
     }

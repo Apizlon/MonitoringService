@@ -5,7 +5,8 @@ namespace MonitoringService.Application.Models;
 public class StatisticsResponse
 {
     public ulong Id { get; set; }
-    public DeviceData DeviceData { get; set; }
-    public AppData AppData { get; set; }
+    public string DeviceName { get; set; }
+    public string OperatingSystem { get; set; }
+    public string Version { get; set; }
     public DateTime LastUpdateDateTime { get; set; }
 }
