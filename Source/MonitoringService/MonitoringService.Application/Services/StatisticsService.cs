@@ -7,10 +7,20 @@ using MonitoringService.Contracts;
 
 namespace MonitoringService.Application.Services;
 
+/// <summary>
+/// Реализация интерфейса <see cref="IStatisticsService"/>
+/// </summary>
 public class StatisticsService : IStatisticsService
 {
+    /// <summary>
+    /// <see cref="StatisticsRepository"/>>
+    /// </summary>
     private readonly IStatisticsRepository _statisticsRepository;
-
+    
+    /// <summary>
+    /// Конструктор с одним параметром
+    /// </summary>
+    /// <param name="statisticsRepository"><see cref="IStatisticsRepository"/></param>
     public StatisticsService(IStatisticsRepository statisticsRepository)
     {
         _statisticsRepository = statisticsRepository;

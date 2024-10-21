@@ -6,6 +6,7 @@ using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//настройка логгера
 Log.Logger = new LoggerConfiguration()
     .WriteTo.File("logs/log.txt",
         rollingInterval: RollingInterval.Day,
