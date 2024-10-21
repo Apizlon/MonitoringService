@@ -3,8 +3,14 @@ using MonitoringService.Application.Models;
 
 namespace MonitoringService.Application.Repositories;
 
+/// <summary>
+/// Реализация интерфейса <see cref="IStatisticsRepository"/>>
+/// </summary>
 public class StatisticsRepository : IStatisticsRepository
 {
+    /// <summary>
+    /// <see cref="StatisticsDbContext"/>>
+    /// </summary>
     private readonly StatisticsDbContext _context;
     
     public StatisticsRepository(StatisticsDbContext context)

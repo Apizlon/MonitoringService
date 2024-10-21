@@ -4,6 +4,9 @@ using MonitoringService.Contracts;
 
 namespace MonitoringService.Host.Controllers;
 
+/// <summary>
+/// API для отображения всех устройств
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class ViewController : ControllerBase

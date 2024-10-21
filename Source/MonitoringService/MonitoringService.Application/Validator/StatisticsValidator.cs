@@ -4,8 +4,17 @@ using MonitoringService.Contracts;
 
 namespace MonitoringService.Application.Validator;
 
+/// <summary>
+/// Класс для валидации входящих запросов типа <see cref="StatisticsRequest"/>>
+/// </summary>
 public static class StatisticsValidator
 {
+    /// <summary>
+    /// Метод расширения для валидации
+    /// </summary>
+    /// <param name="statistics">Объект <see cref="StatisticsRequest"/>> входящего запроса</param>
+    /// <returns><see cref="StatisticsRequest"/></returns>
+    /// <exception cref="BadRequestException"><see cref="BadRequestException"/>></exception>
     public static StatisticsRequest Validate(this StatisticsRequest statistics)
     {
         if (string.IsNullOrEmpty(statistics.DeviceName))
