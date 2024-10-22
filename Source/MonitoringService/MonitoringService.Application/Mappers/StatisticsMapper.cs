@@ -1,10 +1,11 @@
+using Mapster;
 using MonitoringService.Application.Models;
 using MonitoringService.Contracts;
 
 namespace MonitoringService.Application.Mappers;
 
 /// <summary>
-/// Класс-расширение для маппинга
+/// Класс-расширение для маппинга. Использует Mapster для автомаппинга.
 /// </summary>
 public static class StatisticsMapper
 {
@@ -15,13 +16,14 @@ public static class StatisticsMapper
     /// <returns><see cref="Statistics"/></returns>
     public static Statistics MapToDomain(this StatisticsRequest statisticsRequest)
     {
-        return new Statistics()
+        /*return new Statistics()
         {
             DeviceName = statisticsRequest.DeviceName,
             OperatingSystem = statisticsRequest.OperatingSystem,
             Version = statisticsRequest.Version,
             LastUpdateDateTime = DateTime.Now
-        };
+        };*/
+        return statisticsRequest.Adapt<Statistics>();
     }
     
     /// <summary>
@@ -31,14 +33,15 @@ public static class StatisticsMapper
     /// <returns><see cref="StatisticsResponse"/></returns>
     public static StatisticsResponse MapToContract(this Statistics statistics)
     {
-        return new StatisticsResponse()
+        /*return new StatisticsResponse()
         {
             Id = statistics.Id,
             DeviceName = statistics.DeviceName,
             OperatingSystem = statistics.OperatingSystem,
             Version = statistics.Version,
             LastUpdateDateTime = statistics.LastUpdateDateTime
-        };
+        };*/
+        return statistics.Adapt<StatisticsResponse>();
     }
     
     /// <summary>

@@ -2,18 +2,13 @@ using MonitoringService.Application;
 using MonitoringService.Application.Extensions;
 using MonitoringService.Host.Middlewares;
 using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//настройка логгера
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.File("logs/log.txt",
-        rollingInterval: RollingInterval.Day,
-        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-    .WriteTo.Console()
-    .CreateLogger();
-builder.Host.UseSerilog();
+//Конфигурация логгера в файле appsetings.Development.json
+builder.Host.UseSerilog((context,services,configuration)=>
+    configuration.ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(services));
 
 builder.Services.AddCors(options =>
 {
@@ -36,6 +31,7 @@ builder.Services.AddProcessors();
 
 builder.Services.AddTransient<CustomExceptionHandlingMiddleware>();
 var app = builder.Build();
+app.Logger.LogInformation("Сборка успешно завершена");
 
 
 if (app.Environment.IsDevelopment())
@@ -50,4 +46,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
+app.Logger.LogInformation("Запуск приложения");
 app.Run();
