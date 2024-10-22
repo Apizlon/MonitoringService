@@ -3,7 +3,7 @@ using MonitoringService.Application.Models;
 namespace MonitoringService.Application.Repositories;
 
 /// <summary>
-/// Интерфейс репозитория статистики
+/// Репозиторий статистики
 /// </summary>
 public interface IStatisticsRepository
 {

@@ -7,9 +7,7 @@ using MonitoringService.Contracts;
 
 namespace MonitoringService.Application.Services;
 
-/// <summary>
-/// Реализация интерфейса <see cref="IStatisticsService"/>
-/// </summary>
+/// <inheritdoc />
 public class StatisticsService : IStatisticsService
 {
     /// <summary>
@@ -25,19 +23,22 @@ public class StatisticsService : IStatisticsService
     {
         _statisticsRepository = statisticsRepository;
     }
-
+    
+    /// <inheritdoc />
     public async Task<ulong> AddStatisticsAsync(StatisticsRequest statisticsRequest)
     {
         statisticsRequest.Validate();
         return await _statisticsRepository.AddStatAsync(statisticsRequest.MapToDomain());
     }
-
+    
+    /// <inheritdoc />
     public async Task<IEnumerable<StatisticsResponse>> GetAllStatisticsAsync()
     {
         var allStatistics = await _statisticsRepository.GetStatsAsync();
         return allStatistics.MapToContract();
     }
-
+    
+    /// <inheritdoc />
     public async Task<StatisticsResponse> GetStatisticsAsync(ulong id)
     {
         var isStatExists = await _statisticsRepository.StatExistsAsync(id);
@@ -48,7 +49,8 @@ public class StatisticsService : IStatisticsService
         var statistics = await _statisticsRepository.GetStatAsync(id);
         return statistics.MapToContract();
     }
-
+    
+    /// <inheritdoc />
     public async Task UpdateStatisticsAsync(ulong id, StatisticsRequest statisticsRequest)
     {
         var isStatisticsExists = await _statisticsRepository.StatExistsAsync(id);
@@ -59,7 +61,8 @@ public class StatisticsService : IStatisticsService
         statisticsRequest.Validate();
         await _statisticsRepository.UpdateStatAsync(id, statisticsRequest.MapToDomain());
     }
-
+    
+    /// <inheritdoc />
     public async Task DeleteStatisticsAsync(ulong id)
     {
         var isStatisticsExists = await _statisticsRepository.StatExistsAsync(id);
