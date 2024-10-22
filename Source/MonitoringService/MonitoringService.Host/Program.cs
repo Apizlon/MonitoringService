@@ -5,7 +5,8 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Конфигурация логгера в файле appsetings.Development.json
+//Конфигурация логгера в файле appsetings.Development.json.
+//Seq запускается с помощью docker-compose.yml 
 builder.Host.UseSerilog((context,services,configuration)=>
     configuration.ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services));
