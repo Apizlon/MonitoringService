@@ -28,7 +28,9 @@ public class StatisticsService : IStatisticsService
     public async Task<ulong> AddStatisticsAsync(StatisticsRequest statisticsRequest)
     {
         statisticsRequest.Validate();
-        return await _statisticsRepository.AddStatAsync(statisticsRequest.MapToDomain());
+        Statistics statistics = statisticsRequest.MapToDomain();
+        statistics.LastUpdateDateTime=DateTime.Now;
+        return await _statisticsRepository.AddStatAsync(statistics);
     }
     
     /// <inheritdoc />
@@ -59,7 +61,9 @@ public class StatisticsService : IStatisticsService
             throw new StatisticsNotFoundException(id);
         }
         statisticsRequest.Validate();
-        await _statisticsRepository.UpdateStatAsync(id, statisticsRequest.MapToDomain());
+        Statistics statistics = statisticsRequest.MapToDomain();
+        statistics.LastUpdateDateTime = DateTime.Now;;
+        await _statisticsRepository.UpdateStatAsync(id, statistics);
     }
     
     /// <inheritdoc />
