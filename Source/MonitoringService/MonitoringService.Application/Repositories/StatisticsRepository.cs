@@ -1,5 +1,9 @@
-using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
+using Dapper;
+using Microsoft.Extensions.Configuration;
 using MonitoringService.Application.Models;
+using MonitoringService.Application.SqlScripts;
+using Npgsql;
 
 namespace MonitoringService.Application.Repositories;
 
@@ -7,65 +11,84 @@ namespace MonitoringService.Application.Repositories;
 public class StatisticsRepository : IStatisticsRepository
 {
     /// <summary>
-    /// <see cref="StatisticsDbContext"/>
+    /// Строка подключения
     /// </summary>
-    private readonly StatisticsDbContext _context;
+    private readonly string _dbConnection;
     
     /// <summary>
-    /// Конструктор с одним параметром
+    /// Конструктор с одним параметром. Устанавливает строку подключения.
+    /// Если нет переменной окружения строка подклчючения берется из appsettings
     /// </summary>
-    /// <param name="context"><see cref="StatisticsDbContext"/></param>
-    public StatisticsRepository(StatisticsDbContext context)
+    /// <param name="configuration">Конфигурация</param>
+    public StatisticsRepository(IConfiguration configuration)
     {
-        _context = context;
+        _dbConnection = string.IsNullOrEmpty(configuration.GetSection("ConnectionStrings")["StatisticsDatabaseConnection"]) 
+            ? configuration.GetConnectionString("StatisticsDatabaseConnection") 
+            : configuration.GetSection("ConnectionStrings")["StatisticsDatabaseConnection"];
+    }
+    
+    /// <summary>
+    /// Создание подкючения
+    /// </summary>
+    /// <returns>Подключние к базе данных</returns>
+    private async Task<DbConnection> CreateConnectionAsync()
+    {
+        var connection = new NpgsqlConnection(_dbConnection);
+        await connection.OpenAsync();
+        return connection;
     }
     
     /// <inheritdoc />
-    public async Task<ulong> AddStatAsync(Statistics statistics)
+    public async Task<int> AddStatAsync(Statistics statistics)
     {
-        _context.Stats.Add(statistics);
-        await _context.SaveChangesAsync();
-        return statistics.Id;
+        await using var connection = await CreateConnectionAsync();
+        var id = await connection.ExecuteScalarAsync<int>(Sql.AddStatistics, statistics);
+        return id;
     }
     
     /// <inheritdoc />
-    public async Task DeleteStatAsync(ulong id)
+    public async Task DeleteStatAsync(int id)
     {
-        var stat = await _context.Stats.FindAsync(id);
-        _context.Stats.Remove(stat);
-        await _context.SaveChangesAsync();
+        await using var connection = await CreateConnectionAsync();
+        await connection.ExecuteAsync(Sql.DeleteStatistics, new { Id = id });
     }
     
     /// <inheritdoc />
-    public async Task<Statistics> GetStatAsync(ulong id)
+    public async Task<Statistics> GetStatAsync(int id)
     {
-        return await _context.Stats.FindAsync(id);
+        await using var connection = await CreateConnectionAsync();
+        var statistics = await connection.QuerySingleOrDefaultAsync<Statistics>(Sql.GetStatistics, new { Id = id });
+        return statistics;
     }
     
     /// <inheritdoc />
     public async Task<IEnumerable<Statistics>> GetStatsAsync()
     {
-        return await _context.Stats.ToListAsync();
+        await using var connection = await CreateConnectionAsync();
+        var allStats = await connection.QueryAsync<Statistics>(Sql.GetAllStatistics);
+        return allStats;
     }
     
     /// <inheritdoc />
-    public async Task UpdateStatAsync(ulong id, Statistics statistics)
+    public async Task UpdateStatAsync(int id, Statistics statistics)
     {
-        var existingStat = await _context.Stats.FindAsync(id);
-        if (existingStat != null)
-        {
-            existingStat.DeviceName = statistics.DeviceName;
-            existingStat.OperatingSystem = statistics.OperatingSystem;
-            existingStat.Version = statistics.Version;
-            existingStat.LastUpdateDateTime = statistics.LastUpdateDateTime;
-            await _context.SaveChangesAsync();
-        }
+        await using var connection = await CreateConnectionAsync();
+        await connection.ExecuteAsync(Sql.UpdateStatistics,
+            new
+            {
+                Id = id, 
+                statistics.DeviceName,
+                statistics.OperatingSystem,
+                statistics.Version,
+                statistics.LastUpdateDateTime
+            });
     }
     
     /// <inheritdoc />
-    public async Task<bool> StatExistsAsync(ulong id)
+    public async Task<bool> StatExistsAsync(int id)
     {
-        var stat = await _context.Stats.FindAsync(id);
-        return stat!=null;
+        await using var connection = await CreateConnectionAsync();
+        var exists = await connection.ExecuteScalarAsync<bool>(Sql.ExistsStatistics, new { Id = id });
+        return exists;
     }
 }

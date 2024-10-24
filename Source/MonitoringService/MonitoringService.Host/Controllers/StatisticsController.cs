@@ -50,8 +50,8 @@ public class StatisticsController : ControllerBase
     /// </summary>
     /// <param name="id">id</param>
     /// <returns><see cref="StatisticsResponse"/></returns>
-    [HttpGet("{id:long}")]
-    public async Task<IActionResult> GetStatistics(ulong id)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetStatistics(int id)
     {
         _logger.LogInformation($"Запрос на получение статистики устройства с id {id}.");
         var statistics = await _statisticsProcessor.GetStatisticsAsync(id);
@@ -65,8 +65,8 @@ public class StatisticsController : ControllerBase
     /// <param name="id">id обновляемого элемента</param>
     /// <param name="statisticsRequest"><see cref="StatisticsRequest"/></param>
     /// <returns></returns>
-    [HttpPut("{id:long}")]
-    public async Task<IActionResult> UpdateStatistics(ulong id,[FromBody] StatisticsRequest statisticsRequest)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateStatistics(int id,[FromBody] StatisticsRequest statisticsRequest)
     {
         _logger.LogInformation($"Запрос на обновление статистики устройства с id {id}.");
         await _statisticsProcessor.UpdateStatisticsAsync(id,statisticsRequest);
@@ -79,8 +79,8 @@ public class StatisticsController : ControllerBase
     /// </summary>
     /// <param name="id">id удаляемого элемента</param>
     /// <returns></returns>
-    [HttpDelete("{id:long}")]
-    public async Task<IActionResult> DeleteStatistics(ulong id)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteStatistics(int id)
     {
         _logger.LogInformation($"Запрос на удаление статистики устройства с id {id}.");
         await _statisticsProcessor.DeleteStatisticsAsync(id);

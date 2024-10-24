@@ -28,7 +28,7 @@ public class StatisticsProcessor
     /// </summary>
     /// <param name="statisticsRequest"></param>
     /// <returns></returns>
-    public async Task<ulong> AddStatisticsAsync(StatisticsRequest statisticsRequest)
+    public async Task<int> AddStatisticsAsync(StatisticsRequest statisticsRequest)
     {
         return await _statisticsService.AddStatisticsAsync(statisticsRequest);
     }
@@ -47,7 +47,7 @@ public class StatisticsProcessor
     /// </summary>
     /// <param name="id">id</param>
     /// <returns><see cref="StatisticsResponse"/>></returns>
-    public async Task<StatisticsResponse> GetStatisticsAsync(ulong id)
+    public async Task<StatisticsResponse> GetStatisticsAsync(int id)
     {
         return await _statisticsService.GetStatisticsAsync(id);
     }
@@ -57,7 +57,7 @@ public class StatisticsProcessor
     /// </summary>
     /// <param name="id">id обновляемого элемента</param>
     /// <param name="statisticsRequest">Объект обновленной статистики</param>
-    public async Task UpdateStatisticsAsync(ulong id, StatisticsRequest statisticsRequest)
+    public async Task UpdateStatisticsAsync(int id, StatisticsRequest statisticsRequest)
     {
         await _statisticsService.UpdateStatisticsAsync(id, statisticsRequest);
     }
@@ -66,7 +66,7 @@ public class StatisticsProcessor
     /// Удаление статистики
     /// </summary>
     /// <param name="id">id удаляемого элемента</param>
-    public async Task DeleteStatisticsAsync(ulong id)
+    public async Task DeleteStatisticsAsync(int id)
     {
         await _statisticsService.DeleteStatisticsAsync(id);
     }

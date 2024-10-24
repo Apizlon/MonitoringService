@@ -25,7 +25,7 @@ public class StatisticsService : IStatisticsService
     }
     
     /// <inheritdoc />
-    public async Task<ulong> AddStatisticsAsync(StatisticsRequest statisticsRequest)
+    public async Task<int> AddStatisticsAsync(StatisticsRequest statisticsRequest)
     {
         statisticsRequest.Validate();
         Statistics statistics = statisticsRequest.MapToDomain();
@@ -41,7 +41,7 @@ public class StatisticsService : IStatisticsService
     }
     
     /// <inheritdoc />
-    public async Task<StatisticsResponse> GetStatisticsAsync(ulong id)
+    public async Task<StatisticsResponse> GetStatisticsAsync(int id)
     {
         var isStatExists = await _statisticsRepository.StatExistsAsync(id);
         if (!isStatExists)
@@ -53,7 +53,7 @@ public class StatisticsService : IStatisticsService
     }
     
     /// <inheritdoc />
-    public async Task UpdateStatisticsAsync(ulong id, StatisticsRequest statisticsRequest)
+    public async Task UpdateStatisticsAsync(int id, StatisticsRequest statisticsRequest)
     {
         var isStatisticsExists = await _statisticsRepository.StatExistsAsync(id);
         if (!isStatisticsExists)
@@ -67,7 +67,7 @@ public class StatisticsService : IStatisticsService
     }
     
     /// <inheritdoc />
-    public async Task DeleteStatisticsAsync(ulong id)
+    public async Task DeleteStatisticsAsync(int id)
     {
         var isStatisticsExists = await _statisticsRepository.StatExistsAsync(id);
         if (!isStatisticsExists)

@@ -12,7 +12,7 @@ public interface IStatisticsService
     /// Добавление статистики
     /// </summary>
     /// <param name="statisticsRequest"><see cref="StatisticsRequest"/>></param>
-    Task<ulong> AddStatisticsAsync(StatisticsRequest statisticsRequest);
+    Task<int> AddStatisticsAsync(StatisticsRequest statisticsRequest);
     
     /// <summary>
     /// Получение всей статистики
@@ -25,18 +25,18 @@ public interface IStatisticsService
     /// </summary>
     /// <param name="id">id</param>
     /// <returns><see cref="StatisticsResponse"/>></returns>
-    Task<StatisticsResponse> GetStatisticsAsync(ulong id);
+    Task<StatisticsResponse> GetStatisticsAsync(int id);
     
     /// <summary>
     /// Обновление статистики
     /// </summary>
     /// <param name="id">id обновляемого элемента</param>
     /// <param name="statisticsRequest">Объект обновленной статистики</param>
-    Task UpdateStatisticsAsync(ulong id, StatisticsRequest statisticsRequest);
+    Task UpdateStatisticsAsync(int id, StatisticsRequest statisticsRequest);
     
     /// <summary>
     /// Удаление статистики
     /// </summary>
     /// <param name="id">id удаляемого элемента</param>
-    Task DeleteStatisticsAsync(ulong id);
+    Task DeleteStatisticsAsync(int id);
 }
