@@ -9,7 +9,7 @@ public class StatisticsNotFoundException : NotFoundException
     /// Вызывает конструктор базового класса
     /// </summary>
     /// <param name="id">введенное пользователем id</param>
-    public StatisticsNotFoundException(ulong id) : base($"Данные об устройстве с id {id} не найдены.")
+    public StatisticsNotFoundException(int id) : base($"Данные об устройстве с id {id} не найдены.")
     {
         
     }

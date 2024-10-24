@@ -12,19 +12,19 @@ public interface IStatisticsRepository
     /// </summary>
     /// <param name="statistics"><see cref="Statistics"/>></param>
     /// <returns>id добавленного элемента</returns>
-    Task<ulong> AddStatAsync(Statistics statistics);
+    Task<int> AddStatAsync(Statistics statistics);
     
     /// <summary>
     /// Удаление статистики
     /// </summary>
     /// <param name="id">id удаляемого элемента</param>
-    Task DeleteStatAsync(ulong id);
+    Task DeleteStatAsync(int id);
     
     /// <summary>
     /// Получение объекта по id
     /// </summary>
     /// <param name="id">id</param>
-    Task<Statistics> GetStatAsync(ulong id);
+    Task<Statistics> GetStatAsync(int id);
     
     /// <summary>
     /// Получение всей статистики
@@ -37,11 +37,11 @@ public interface IStatisticsRepository
     /// </summary>
     /// <param name="id">id обновляемого элемента</param>
     /// <param name="statistics">Объект обновленной статистики</param>
-    Task UpdateStatAsync(ulong id, Statistics statistics);
+    Task UpdateStatAsync(int id, Statistics statistics);
     
     /// <summary>
     /// Проверка существования объекта статистики
     /// </summary>
     /// <param name="id">id искомого объекта</param>
-    Task<bool> StatExistsAsync(ulong id);
+    Task<bool> StatExistsAsync(int id);
 }

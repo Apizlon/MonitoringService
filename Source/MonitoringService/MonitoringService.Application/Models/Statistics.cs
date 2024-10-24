@@ -10,7 +10,7 @@ public class Statistics
     /// <summary>
     /// Уникальный идентификатор
     /// </summary>
-    public ulong Id { get; set; }
+    public int Id { get; set; }
     
     /// <summary>
     /// Имя устройства

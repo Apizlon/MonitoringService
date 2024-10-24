@@ -1,5 +1,7 @@
+using FluentMigrator.Runner;
 using MonitoringService.Application;
 using MonitoringService.Application.Extensions;
+using MonitoringService.Application.Migrations;
 using MonitoringService.Host.Middlewares;
 using Serilog;
 
@@ -22,18 +24,26 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<StatisticsDbContext>();
+//builder.Services.AddDbContext<StatisticsDbContext>();
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddProcessors();
-
 builder.Services.AddTransient<CustomExceptionHandlingMiddleware>();
+builder.Services.AddMigration(builder.Configuration);
+
 var app = builder.Build();
 app.Logger.LogInformation("Сборка успешно завершена");
 
+using (var scope = app.Services.CreateScope())
+{
+    var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+    runner.MigrateUp();
+}
 
 if (app.Environment.IsDevelopment())
 {
