@@ -14,6 +14,7 @@ public static class ServicesExtension
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         return services
-            .AddScoped<IStatisticsService,StatisticsService>();
+            .AddScoped<IStatisticsService,StatisticsService>()
+            .AddScoped<IEventService, EventService>();
     }
 }

@@ -15,6 +15,7 @@ public static class ProcessorsExtension
     public static IServiceCollection AddProcessors(this IServiceCollection services)
     {
         return services
-            .AddScoped<StatisticsProcessor>();
+            .AddScoped<StatisticsProcessor>()
+            .AddScoped<EventProcessor>();
     }
 }

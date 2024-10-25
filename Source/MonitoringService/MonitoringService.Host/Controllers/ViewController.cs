@@ -17,6 +17,8 @@ public class ViewController : ControllerBase
     /// <see cref="StatisticsProcessor"/>
     /// </summary>
     private readonly StatisticsProcessor _statisticsProcessor;
+
+    private readonly EventProcessor _eventProcessor;
     
     /// <summary>
     /// Логгер
@@ -27,10 +29,12 @@ public class ViewController : ControllerBase
     /// Конструктор контроллера с 2 параметрами
     /// </summary>
     /// <param name="statisticsProcessor"><see cref="StatisticsProcessor"/></param>
+    /// <param name="eventProcessor"><see cref="EventProcessor"/></param>
     /// <param name="logger">Логгер</param>
-    public ViewController(StatisticsProcessor statisticsProcessor,ILogger<ViewController> logger)
+    public ViewController(StatisticsProcessor statisticsProcessor,EventProcessor eventProcessor,ILogger<ViewController> logger)
     {
         _statisticsProcessor = statisticsProcessor;
+        _eventProcessor = eventProcessor;
         _logger = logger;
     }
     
@@ -45,5 +49,14 @@ public class ViewController : ControllerBase
         var allStatistics = await _statisticsProcessor.GetAllStatisticsAsync();
         _logger.LogInformation("Статистика успешно получена");
         return Ok(allStatistics);
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetEventsByStatisticsId(int id)
+    {
+        _logger.LogInformation($"Запрос на получение событий устройства с id {id}");
+        var events = await _eventProcessor.GetEventsByStatisticsIdAsync(id);
+        _logger.LogInformation($"События устройства с id {id} успешно получены");
+        return Ok(events);
     }
 }

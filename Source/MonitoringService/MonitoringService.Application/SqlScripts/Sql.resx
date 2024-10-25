@@ -118,6 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AddEvent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AddEvent.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="DeleteEvent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DeleteEvent.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="ExistsEvent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExistsEvent.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="GetEvent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetEvent.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="GetEventsByStatisticsId" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetEventsByStatisticsId.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="UpdateEvent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UpdateEvent.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="AddStatistics" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AddStatistics.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="DeleteStatistics" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DeleteStatistics.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -132,8 +153,5 @@
   </data>
   <data name="UpdateStatistics" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\UpdateStatistics.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
-  <data name="AddStatistics" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\AddStatistics.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

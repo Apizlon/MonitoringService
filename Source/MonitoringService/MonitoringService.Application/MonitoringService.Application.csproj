@@ -21,4 +21,19 @@
       <ProjectReference Include="..\MonitoringService.Contracts\MonitoringService.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="SqlScripts\Sql.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Sql.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="SqlScripts\Sql.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Sql.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

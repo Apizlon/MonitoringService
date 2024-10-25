@@ -17,7 +17,8 @@ public static class RepositoriesExtension
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         return services
-            .AddScoped<IStatisticsRepository, StatisticsRepository>();
+            .AddScoped<IStatisticsRepository, StatisticsRepository>()
+            .AddScoped<IEventRepository, EventRepository>();
     }
 
     public static IServiceCollection AddMigration(this IServiceCollection services, IConfiguration configuration)
