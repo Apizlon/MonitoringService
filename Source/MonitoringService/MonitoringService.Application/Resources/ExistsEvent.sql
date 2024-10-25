@@ -1,0 +1,1 @@
+SELECT count(1) FROM  "Events" WHERE "Id" = @Id;

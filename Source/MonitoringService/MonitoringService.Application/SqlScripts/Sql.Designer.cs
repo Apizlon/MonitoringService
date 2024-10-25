@@ -61,8 +61,19 @@ namespace MonitoringService.Application.SqlScripts {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на INSERT INTO public.&quot;Statistics&quot; (&quot;Id&quot;,&quot;DeviceName&quot;,&quot;OperatingSystem&quot;,&quot;Version&quot;,&quot;LastUpdateDateTime&quot;)
-        ///VALUES (@Id,@DeviceName,@OperatingSystem,@Version,@LastUpdateDateTime)
+        ///   Ищет локализованную строку, похожую на INSERT INTO &quot;Events&quot; (&quot;Id&quot;,&quot;StatisticsId&quot;,&quot;EventDateTime&quot;,&quot;Name&quot;,&quot;Description&quot;)
+        ///VALUES (@Id,@StatisticsId,@EventDateTime,@Name,@Description)
+        ///RETURNING &quot;Id&quot;;.
+        /// </summary>
+        internal static string AddEvent {
+            get {
+                return ResourceManager.GetString("AddEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на INSERT INTO public.&quot;Statistics&quot; (&quot;DeviceName&quot;,&quot;OperatingSystem&quot;,&quot;Version&quot;,&quot;LastUpdateDateTime&quot;)
+        ///VALUES (@DeviceName,@OperatingSystem,@Version,@LastUpdateDateTime)
         ///RETURNING &quot;Id&quot;;.
         /// </summary>
         internal static string AddStatistics {
@@ -72,11 +83,29 @@ namespace MonitoringService.Application.SqlScripts {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на DELETE FROM &quot;Events&quot; WHERE &quot;Id&quot; = @Id.
+        /// </summary>
+        internal static string DeleteEvent {
+            get {
+                return ResourceManager.GetString("DeleteEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на DELETE FROM &quot;Statistics&quot; WHERE &quot;Id&quot; = @Id;.
         /// </summary>
         internal static string DeleteStatistics {
             get {
                 return ResourceManager.GetString("DeleteStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SELECT count(1) FROM  &quot;Events&quot; WHERE &quot;Id&quot; = @Id;.
+        /// </summary>
+        internal static string ExistsEvent {
+            get {
+                return ResourceManager.GetString("ExistsEvent", resourceCulture);
             }
         }
         
@@ -99,12 +128,48 @@ namespace MonitoringService.Application.SqlScripts {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на SELECT &quot;Id&quot;,&quot;StatisticsId&quot;,&quot;EventDateTime&quot;,&quot;Name&quot;,&quot;Description&quot; FROM &quot;Events&quot;
+        ///WHERE &quot;Id&quot; = @Id;.
+        /// </summary>
+        internal static string GetEvent {
+            get {
+                return ResourceManager.GetString("GetEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SELECT &quot;Id&quot;,&quot;StatisticsId&quot;,&quot;EventDateTime&quot;,&quot;Name&quot;,&quot;Description&quot; FROM &quot;Events&quot;
+        ///WHERE &quot;StatisticsId&quot; = @StatisticsId;.
+        /// </summary>
+        internal static string GetEventsByStatisticsId {
+            get {
+                return ResourceManager.GetString("GetEventsByStatisticsId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на SELECT &quot;Id&quot;,&quot;DeviceName&quot;,&quot;OperatingSystem&quot;,&quot;Version&quot;,&quot;LastUpdateDateTime&quot; FROM &quot;Statistics&quot;
         ///WHERE &quot;Id&quot; = @Id;.
         /// </summary>
         internal static string GetStatistics {
             get {
                 return ResourceManager.GetString("GetStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на UPDATE &quot;Events&quot;
+        ///SET
+        ///    &quot;Id&quot; = @Id,
+        ///    &quot;StatisticsId&quot; = @StatisticsId,
+        ///    &quot;EventDateTime&quot; = @EventDateTime,
+        ///    &quot;Name&quot; = @Name,
+        ///    &quot;Description&quot; = @Description
+        ///WHERE &quot;Id&quot; = @Id;.
+        /// </summary>
+        internal static string UpdateEvent {
+            get {
+                return ResourceManager.GetString("UpdateEvent", resourceCulture);
             }
         }
         
