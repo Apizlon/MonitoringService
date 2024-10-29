@@ -1,3 +1,4 @@
+using System.Data;
 using System.Data.Common;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -9,53 +10,45 @@ namespace MonitoringService.Application.Repositories;
 
 public class EventRepository : IEventRepository
 {
-    private readonly string _dbConnection;
+    private readonly IDbConnection _connection;
+    private IDbTransaction _transaction;
     
-    public EventRepository(IConfiguration configuration)
+    public EventRepository(IDbConnection newConnection)
     {
-        _dbConnection = string.IsNullOrEmpty(configuration.GetSection("ConnectionStrings")["StatisticsDatabaseConnection"]) 
-            ? configuration.GetConnectionString("StatisticsDatabaseConnection") 
-            : configuration.GetSection("ConnectionStrings")["StatisticsDatabaseConnection"];
-    }
-    
-    private async Task<DbConnection> CreateConnectionAsync()
-    {
-        var connection = new NpgsqlConnection(_dbConnection);
-        await connection.OpenAsync();
-        return connection;
+        _connection = newConnection;
     }
 
+    public void SetTransaction(IDbTransaction transaction)
+    {
+        _transaction = transaction;
+    }
+    
     public async Task<Guid> AddEventAsync(StatEvent statEvent)
     {
-        await using var connection = await CreateConnectionAsync();
-        var id = await connection.ExecuteScalarAsync<Guid>(Sql.AddEvent,statEvent);
+        var id = await _connection.ExecuteScalarAsync<Guid>(Sql.AddEvent,statEvent,_transaction);
         return id;
     }
 
     public async Task DeleteEventAsync(Guid id)
     {
-        await using var connection = await CreateConnectionAsync();
-        await connection.ExecuteAsync(Sql.DeleteEvent, new { Id = id });
+        await _connection.ExecuteAsync(Sql.DeleteEvent, new { Id = id },_transaction);
     }
 
     public async Task<StatEvent> GetEventAsync(Guid id)
     {
-        await using var connection = await CreateConnectionAsync();
-        var statEvent = await connection.QuerySingleOrDefaultAsync<StatEvent>(Sql.GetEvent, new { Id = id });
+        var statEvent = await _connection.QuerySingleOrDefaultAsync<StatEvent>(Sql.GetEvent, new { Id = id },_transaction);
         return statEvent;
     }
 
     public async Task<IEnumerable<StatEvent>> GetEventsByStatisticsIdAsync(int statisticsId)
     {
-        await using var connection = await CreateConnectionAsync();
-        var events = await connection.QueryAsync<StatEvent>(Sql.GetEventsByStatisticsId, new {StatisticsId = statisticsId});
+        var events = await _connection.QueryAsync<StatEvent>(Sql.GetEventsByStatisticsId, new {StatisticsId = statisticsId},_transaction);
         return events;
     }
 
     public async Task UpdateEventAsync(Guid id, StatEvent statEvent)
     {
-        await using var connection = await CreateConnectionAsync();
-        await connection.ExecuteAsync(Sql.UpdateEvent,
+        await _connection.ExecuteAsync(Sql.UpdateEvent,
             new
             {
                 Id = id, 
@@ -63,13 +56,12 @@ public class EventRepository : IEventRepository
                 statEvent.EventDateTime,
                 statEvent.Name,
                 statEvent.Description
-            });
+            },_transaction);
     }
 
     public async Task<bool> EventExistsAsync(Guid id)
     {
-        await using var connection = await CreateConnectionAsync();
-        var exists = await connection.ExecuteScalarAsync<bool>(Sql.ExistsEvent, new { Id = id });
+        var exists = await _connection.ExecuteScalarAsync<bool>(Sql.ExistsEvent, new { Id = id },_transaction);
         return exists;
     }
 }

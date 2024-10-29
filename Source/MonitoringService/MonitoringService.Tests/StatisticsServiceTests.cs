@@ -9,12 +9,12 @@ namespace MonitoringService.Tests;
 
 public class StatisticsServiceTests
 {
-    private readonly Mock<IStatisticsRepository> _statisticsRepositoryMock;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly IStatisticsService _statisticsService;
     public StatisticsServiceTests()
     {
-        _statisticsRepositoryMock = new Mock<IStatisticsRepository>();
-        _statisticsService = new StatisticsService(_statisticsRepositoryMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _statisticsService = new StatisticsService(_unitOfWorkMock.Object);
     }
     
     [Fact]
@@ -24,14 +24,14 @@ public class StatisticsServiceTests
         int expectedId = 15;
         var statisticsRequest = new StatisticsRequest
             { DeviceName = "DeviceName", OperatingSystem = "OS", Version = "1.0.1" };
-        _statisticsRepositoryMock.Setup(repo => repo.AddStatAsync(It.IsAny<Statistics>())).ReturnsAsync(expectedId);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.AddStatAsync(It.IsAny<Statistics>())).ReturnsAsync(expectedId);
 
         // Act
         var result = await _statisticsService.AddStatisticsAsync(statisticsRequest);
         
         // Assert
         Assert.Equal(expectedId,result);
-        _statisticsRepositoryMock.Verify(repo=>repo.AddStatAsync(It.IsAny<Statistics>()), Times.Once);
+        _unitOfWorkMock.Verify(repo=>repo._StatisticsRepository.AddStatAsync(It.IsAny<Statistics>()), Times.Once);
     }
     
     [Fact]
@@ -81,13 +81,13 @@ public class StatisticsServiceTests
     {
         // Arrange
         int id = 1;
-        _statisticsRepositoryMock.Setup(repo => repo.StatExistsAsync(id)).ReturnsAsync(true);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.StatExistsAsync(id)).ReturnsAsync(true);
         
         // Act
         await _statisticsService.DeleteStatisticsAsync(id);
         
         // Assert
-        _statisticsRepositoryMock.Verify(repo => repo.DeleteStatAsync(id),Times.Once);
+        _unitOfWorkMock.Verify(repo => repo._StatisticsRepository.DeleteStatAsync(id),Times.Once);
     }
     
     [Fact]
@@ -95,7 +95,7 @@ public class StatisticsServiceTests
     {
         // Arrange
         int invalidId = 1;
-        _statisticsRepositoryMock.Setup(repo => repo.StatExistsAsync(invalidId)).ReturnsAsync(false);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.StatExistsAsync(invalidId)).ReturnsAsync(false);
         
         // Act
         var func = async () => await _statisticsService.DeleteStatisticsAsync(invalidId);
@@ -111,8 +111,8 @@ public class StatisticsServiceTests
         int id = 15;
         DateTime currDateTime = DateTime.Now;
         var stat = new Statistics {Id = id,DeviceName = "DeviceName",OperatingSystem = "Os", Version = "1.0.1",LastUpdateDateTime = currDateTime};
-        _statisticsRepositoryMock.Setup(repo => repo.GetStatAsync(id)).ReturnsAsync(stat);
-        _statisticsRepositoryMock.Setup(repo => repo.StatExistsAsync(stat.Id)).ReturnsAsync(true);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.GetStatAsync(id)).ReturnsAsync(stat);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.StatExistsAsync(stat.Id)).ReturnsAsync(true);
 
         // Act
         var result = await _statisticsService.GetStatisticsAsync(id);
@@ -123,8 +123,8 @@ public class StatisticsServiceTests
         Assert.Equal(stat.OperatingSystem,result.OperatingSystem);
         Assert.Equal(stat.Version,result.Version);
         Assert.Equal(stat.LastUpdateDateTime,result.LastUpdateDateTime);
-        _statisticsRepositoryMock.Verify(repo=>repo.GetStatAsync(id), Times.Once);
-        _statisticsRepositoryMock.Verify(repo => repo.StatExistsAsync(stat.Id),Times.Once);
+        _unitOfWorkMock.Verify(repo=>repo._StatisticsRepository.GetStatAsync(id), Times.Once);
+        _unitOfWorkMock.Verify(repo => repo._StatisticsRepository.StatExistsAsync(stat.Id),Times.Once);
     }
 
     [Fact]
@@ -132,7 +132,7 @@ public class StatisticsServiceTests
     {
         // Arrange
         int id = 15;
-        _statisticsRepositoryMock.Setup(repo => repo.StatExistsAsync(id)).ReturnsAsync(false);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.StatExistsAsync(id)).ReturnsAsync(false);
         
         // Act
         var func = async () =>await _statisticsService.GetStatisticsAsync(id);
@@ -158,14 +158,14 @@ public class StatisticsServiceTests
                 LastUpdateDateTime = DateTime.Now
             }
         };
-        _statisticsRepositoryMock.Setup(repo => repo.GetStatsAsync()).ReturnsAsync(stats);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.GetStatsAsync()).ReturnsAsync(stats);
 
         // Act
         var result = await _statisticsService.GetAllStatisticsAsync();
 
         // Assert
         Assert.Equal(stats.Count,result.Count());
-        _statisticsRepositoryMock.Verify(repo => repo.GetStatsAsync(),Times.Once);
+        _unitOfWorkMock.Verify(repo => repo._StatisticsRepository.GetStatsAsync(),Times.Once);
     }
     
     [Fact]
@@ -174,15 +174,15 @@ public class StatisticsServiceTests
         // Arrange
         int id = 15;
         var statRequest = new StatisticsRequest {DeviceName = "DeviceName",OperatingSystem = "Os", Version = "1.0.1"};
-        _statisticsRepositoryMock.Setup(repo => repo.StatExistsAsync(id)).ReturnsAsync(true);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.StatExistsAsync(id)).ReturnsAsync(true);
         
 
         // Act
         await _statisticsService.UpdateStatisticsAsync(id,statRequest);
         
         // Assert
-        _statisticsRepositoryMock.Verify(repo=>repo.UpdateStatAsync(id,It.IsAny<Statistics>()), Times.Once);
-        _statisticsRepositoryMock.Verify(repo => repo.StatExistsAsync(id),Times.Once);
+        _unitOfWorkMock.Verify(repo=>repo._StatisticsRepository.UpdateStatAsync(id,It.IsAny<Statistics>()), Times.Once);
+        _unitOfWorkMock.Verify(repo => repo._StatisticsRepository.StatExistsAsync(id),Times.Once);
     }
     
     [Fact]
@@ -190,7 +190,7 @@ public class StatisticsServiceTests
     {
         // Arrange
         int id = 15;
-        _statisticsRepositoryMock.Setup(repo => repo.StatExistsAsync(id)).ReturnsAsync(false);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.StatExistsAsync(id)).ReturnsAsync(false);
         
         // Act
         var func = async () =>await _statisticsService.UpdateStatisticsAsync(id,new StatisticsRequest());
@@ -206,14 +206,14 @@ public class StatisticsServiceTests
         int id = 15;
         var statisticsRequest = new StatisticsRequest
             { DeviceName = "", OperatingSystem = "OS", Version = "1.0.1" };
-        _statisticsRepositoryMock.Setup(repo => repo.StatExistsAsync(id)).ReturnsAsync(true);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.StatExistsAsync(id)).ReturnsAsync(true);
         
         // Act
         var func = async () => await _statisticsService.UpdateStatisticsAsync(id,statisticsRequest);
         
         // Assert
         await Assert.ThrowsAsync<BadRequestException>(func);
-        _statisticsRepositoryMock.Verify(repo => repo.StatExistsAsync(id),Times.Once);
+        _unitOfWorkMock.Verify(repo => repo._StatisticsRepository.StatExistsAsync(id),Times.Once);
     }
     
     [Fact]
@@ -223,14 +223,14 @@ public class StatisticsServiceTests
         int id = 15;
         var statisticsRequest = new StatisticsRequest
             { DeviceName = "DeviceName", OperatingSystem = "", Version = "1.0.1" };
-        _statisticsRepositoryMock.Setup(repo => repo.StatExistsAsync(id)).ReturnsAsync(true);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.StatExistsAsync(id)).ReturnsAsync(true);
         
         // Act
         var func = async () => await _statisticsService.UpdateStatisticsAsync(id,statisticsRequest);
         
         // Assert
         await Assert.ThrowsAsync<BadRequestException>(func);
-        _statisticsRepositoryMock.Verify(repo => repo.StatExistsAsync(id),Times.Once);
+        _unitOfWorkMock.Verify(repo => repo._StatisticsRepository.StatExistsAsync(id),Times.Once);
     }
     
     [Fact]
@@ -240,13 +240,13 @@ public class StatisticsServiceTests
         int id = 15;
         var statisticsRequest = new StatisticsRequest
             { DeviceName = "DeviceName", OperatingSystem = "OS", Version = "" };
-        _statisticsRepositoryMock.Setup(repo => repo.StatExistsAsync(id)).ReturnsAsync(true);
+        _unitOfWorkMock.Setup(repo => repo._StatisticsRepository.StatExistsAsync(id)).ReturnsAsync(true);
         
         // Act
         var func = async () => await _statisticsService.UpdateStatisticsAsync(id,statisticsRequest);
         
         // Assert
         await Assert.ThrowsAsync<BadRequestException>(func);
-        _statisticsRepositoryMock.Verify(repo => repo.StatExistsAsync(id),Times.Once);
+        _unitOfWorkMock.Verify(repo => repo._StatisticsRepository.StatExistsAsync(id),Times.Once);
     }
 }

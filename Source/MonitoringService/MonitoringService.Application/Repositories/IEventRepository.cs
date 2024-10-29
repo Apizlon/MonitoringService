@@ -1,3 +1,4 @@
+using System.Data;
 using MonitoringService.Application.Models;
 
 namespace MonitoringService.Application.Repositories;
@@ -10,4 +11,5 @@ public interface IEventRepository
     Task<IEnumerable<StatEvent>> GetEventsByStatisticsIdAsync(int statisticsId);
     Task UpdateEventAsync(Guid id, StatEvent statEvent);
     Task<bool> EventExistsAsync(Guid id);
+    void SetTransaction(IDbTransaction transaction);
 }

@@ -1,3 +1,4 @@
+using System.Data;
 using System.Data.Common;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -10,70 +11,50 @@ namespace MonitoringService.Application.Repositories;
 /// <inheritdoc />
 public class StatisticsRepository : IStatisticsRepository
 {
-    /// <summary>
-    /// Строка подключения
-    /// </summary>
-    private readonly string _dbConnection;
+    private readonly IDbConnection _connection;
+    private IDbTransaction _transaction;
     
-    /// <summary>
-    /// Конструктор с одним параметром. Устанавливает строку подключения.
-    /// Если нет переменной окружения строка подклчючения берется из appsettings
-    /// </summary>
-    /// <param name="configuration">Конфигурация</param>
-    public StatisticsRepository(IConfiguration configuration)
+    public StatisticsRepository(IDbConnection connection)
     {
-        _dbConnection = string.IsNullOrEmpty(configuration.GetSection("ConnectionStrings")["StatisticsDatabaseConnection"]) 
-            ? configuration.GetConnectionString("StatisticsDatabaseConnection") 
-            : configuration.GetSection("ConnectionStrings")["StatisticsDatabaseConnection"];
+        _connection = connection;
     }
     
-    /// <summary>
-    /// Создание подкючения
-    /// </summary>
-    /// <returns>Подключние к базе данных</returns>
-    private async Task<DbConnection> CreateConnectionAsync()
+    public void SetTransaction(IDbTransaction transaction)
     {
-        var connection = new NpgsqlConnection(_dbConnection);
-        await connection.OpenAsync();
-        return connection;
+        _transaction = transaction;
     }
     
     /// <inheritdoc />
     public async Task<int> AddStatAsync(Statistics statistics)
     {
-        await using var connection = await CreateConnectionAsync();
-        var id = await connection.ExecuteScalarAsync<int>(Sql.AddStatistics, statistics);
+        var id = await _connection.ExecuteScalarAsync<int>(Sql.AddStatistics, statistics,_transaction);
         return id;
     }
     
     /// <inheritdoc />
     public async Task DeleteStatAsync(int id)
     {
-        await using var connection = await CreateConnectionAsync();
-        await connection.ExecuteAsync(Sql.DeleteStatistics, new { Id = id });
+        await _connection.ExecuteAsync(Sql.DeleteStatistics, new { Id = id },_transaction);
     }
     
     /// <inheritdoc />
     public async Task<Statistics> GetStatAsync(int id)
     {
-        await using var connection = await CreateConnectionAsync();
-        var statistics = await connection.QuerySingleOrDefaultAsync<Statistics>(Sql.GetStatistics, new { Id = id });
+        var statistics = await _connection.QuerySingleOrDefaultAsync<Statistics>(Sql.GetStatistics, new { Id = id },_transaction);
         return statistics;
     }
     
     /// <inheritdoc />
     public async Task<IEnumerable<Statistics>> GetStatsAsync()
     {
-        await using var connection = await CreateConnectionAsync();
-        var allStats = await connection.QueryAsync<Statistics>(Sql.GetAllStatistics);
+        var allStats = await _connection.QueryAsync<Statistics>(Sql.GetAllStatistics,_transaction);
         return allStats;
     }
     
     /// <inheritdoc />
     public async Task UpdateStatAsync(int id, Statistics statistics)
     {
-        await using var connection = await CreateConnectionAsync();
-        await connection.ExecuteAsync(Sql.UpdateStatistics,
+        await _connection.ExecuteAsync(Sql.UpdateStatistics,
             new
             {
                 Id = id, 
@@ -81,22 +62,20 @@ public class StatisticsRepository : IStatisticsRepository
                 statistics.OperatingSystem,
                 statistics.Version,
                 statistics.LastUpdateDateTime
-            });
+            },_transaction);
     }
     
     /// <inheritdoc />
     public async Task UpdateStatLastUpdateDateTimeAsync(int id, DateTime lastUpdateDateTime)
     {
-        await using var connection = await CreateConnectionAsync();
-        await connection.ExecuteAsync(Sql.UpdateStatisticsLastUpdateDateTime,
-            new { Id = id, LastUpdateDateTime = lastUpdateDateTime });
+        await _connection.ExecuteAsync(Sql.UpdateStatisticsLastUpdateDateTime,
+            new { Id = id, LastUpdateDateTime = lastUpdateDateTime },_transaction);
     }
     
     /// <inheritdoc />
     public async Task<bool> StatExistsAsync(int id)
     {
-        await using var connection = await CreateConnectionAsync();
-        var exists = await connection.ExecuteScalarAsync<bool>(Sql.ExistsStatistics, new { Id = id });
+        var exists = await _connection.ExecuteScalarAsync<bool>(Sql.ExistsStatistics, new { Id = id },_transaction);
         return exists;
     }
 }

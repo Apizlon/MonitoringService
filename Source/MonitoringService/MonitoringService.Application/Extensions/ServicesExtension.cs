@@ -15,6 +15,7 @@ public static class ServicesExtension
     {
         return services
             .AddScoped<IStatisticsService,StatisticsService>()
-            .AddScoped<IEventService, EventService>();
+            .AddScoped<IEventService, EventService>()
+            .AddScoped<IUnitOfWork,UnitOfWork>();
     }
 }
