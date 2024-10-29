@@ -40,6 +40,14 @@ public interface IStatisticsRepository
     Task UpdateStatAsync(int id, Statistics statistics);
     
     /// <summary>
+    /// Обновление последнего времени обновления(при добавлении события)
+    /// </summary>
+    /// <param name="id">id статистики</param>
+    /// <param name="lastUpdateDateTime">Время последнего обовления</param>
+    /// <returns></returns>
+    Task UpdateStatLastUpdateDateTimeAsync(int id, DateTime lastUpdateDateTime);
+    
+    /// <summary>
     /// Проверка существования объекта статистики
     /// </summary>
     /// <param name="id">id искомого объекта</param>

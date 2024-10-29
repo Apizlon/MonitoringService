@@ -85,6 +85,14 @@ public class StatisticsRepository : IStatisticsRepository
     }
     
     /// <inheritdoc />
+    public async Task UpdateStatLastUpdateDateTimeAsync(int id, DateTime lastUpdateDateTime)
+    {
+        await using var connection = await CreateConnectionAsync();
+        await connection.ExecuteAsync(Sql.UpdateStatisticsLastUpdateDateTime,
+            new { Id = id, LastUpdateDateTime = lastUpdateDateTime });
+    }
+    
+    /// <inheritdoc />
     public async Task<bool> StatExistsAsync(int id)
     {
         await using var connection = await CreateConnectionAsync();

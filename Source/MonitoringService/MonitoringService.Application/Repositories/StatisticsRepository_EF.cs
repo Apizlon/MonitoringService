@@ -70,4 +70,9 @@ public class StatisticsRepository_EF : IStatisticsRepository
         var stat = await _context.Stats.FindAsync(id);
         return stat!=null;
     }
+
+    public async Task UpdateStatLastUpdateDateTimeAsync(int id, DateTime lastUpdateDateTime)
+    {
+        throw new NotImplementedException();
+    }
 }
