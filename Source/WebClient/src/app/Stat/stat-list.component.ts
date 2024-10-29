@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { StatService } from "./stat.service";
 import { Stat } from "./stat.model";
+import { Event } from "../Events/event.model";
 
 @Component({
     selector: 'app-stat-list',
@@ -8,18 +9,29 @@ import { Stat } from "./stat.model";
     styleUrls: ['./stat-list.component.css']
 })
 export class StatListComponent implements OnInit{
-    stats:Stat[] = [];
+    stats: Stat[] = [];
+    selectedStat: Stat | null = null;
+    statEvents: Event[] = [];
 
     constructor(private StatService: StatService) {}
 
     ngOnInit(): void {
-        this.StatService.getStats().subscribe(
-            data=>{
-                this.stats=data;
-            },
-            error =>{
-                console.error('Ошибка при получении данных', error);
-            }
-    );
+        this.loadStats();
+    }
+
+    loadStats() {
+        this.StatService.getStats().subscribe(stats => {
+            this.stats = stats; 
+        })
+    }
+
+    onSelectStat(statId: number){
+        this.selectedStat = this.stats.find(stat => stat.id === statId) || null;
+
+        if (this.selectedStat){    
+            this.StatService.getEventsByStatId(statId).subscribe(events =>{
+                this.statEvents = events;
+            })
+        }
     }
 }

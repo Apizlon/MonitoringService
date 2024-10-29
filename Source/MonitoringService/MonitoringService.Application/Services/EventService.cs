@@ -74,6 +74,13 @@ public class EventService : IEventService
             throw new EventNotFoundException(id);
         }
 
+        bool statExists = await _statisticsRepository.StatExistsAsync(eventRequest.StatisticsId);
+        if (!statExists)
+        {
+            throw new StatisticsNotFoundException(eventRequest.StatisticsId);
+        }
+
+        eventRequest.Validate();
         await _eventRepository.UpdateEventAsync(id,eventRequest.MapToDomain());
     }
 }

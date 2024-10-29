@@ -29,7 +29,7 @@ public static class EventValidator
 
         if (eventRequest.EventDateTime > DateTime.Now)
         {
-            throw new BadRequestException("Длина описания не должна превышать 1024 символа");
+            throw new BadRequestException("Дата события не должна превышать текущую");
         }
         return eventRequest;
     }
