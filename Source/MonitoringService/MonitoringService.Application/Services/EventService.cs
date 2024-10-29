@@ -28,6 +28,7 @@ public class EventService : IEventService
         eventRequest.Validate();
         StatEvent statEvent = eventRequest.MapToDomain();
         statEvent.Id = Guid.NewGuid();
+        await _statisticsRepository.UpdateStatLastUpdateDateTimeAsync(statEvent.StatisticsId, statEvent.EventDateTime);
         return await _eventRepository.AddEventAsync(statEvent);
     }
 

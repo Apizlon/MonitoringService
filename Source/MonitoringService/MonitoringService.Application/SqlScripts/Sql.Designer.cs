@@ -188,5 +188,17 @@ namespace MonitoringService.Application.SqlScripts {
                 return ResourceManager.GetString("UpdateStatistics", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на UPDATE &quot;Statistics&quot;
+        ///SET
+        ///    &quot;LastUpdateDateTime&quot; = @LastUpdateDateTime
+        ///WHERE &quot;Id&quot; = @Id;.
+        /// </summary>
+        internal static string UpdateStatisticsLastUpdateDateTime {
+            get {
+                return ResourceManager.GetString("UpdateStatisticsLastUpdateDateTime", resourceCulture);
+            }
+        }
     }
 }
