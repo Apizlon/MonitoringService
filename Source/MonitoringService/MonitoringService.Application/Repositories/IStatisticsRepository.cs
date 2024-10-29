@@ -1,3 +1,4 @@
+using System.Data;
 using MonitoringService.Application.Models;
 
 namespace MonitoringService.Application.Repositories;
@@ -52,4 +53,6 @@ public interface IStatisticsRepository
     /// </summary>
     /// <param name="id">id искомого объекта</param>
     Task<bool> StatExistsAsync(int id);
+    
+    void SetTransaction(IDbTransaction transaction);
 }

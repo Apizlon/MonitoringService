@@ -10,18 +10,11 @@ namespace MonitoringService.Application.Services;
 /// <inheritdoc />
 public class StatisticsService : IStatisticsService
 {
-    /// <summary>
-    /// <see cref="StatisticsRepository"/>>
-    /// </summary>
-    private readonly IStatisticsRepository _statisticsRepository;
+    private readonly IUnitOfWork _unitOfWork;
     
-    /// <summary>
-    /// Конструктор с одним параметром
-    /// </summary>
-    /// <param name="statisticsRepository"><see cref="IStatisticsRepository"/></param>
-    public StatisticsService(IStatisticsRepository statisticsRepository)
+    public StatisticsService(IUnitOfWork unitOfWork)
     {
-        _statisticsRepository = statisticsRepository;
+        _unitOfWork = unitOfWork;
     }
     
     /// <inheritdoc />
@@ -30,32 +23,32 @@ public class StatisticsService : IStatisticsService
         statisticsRequest.Validate();
         Statistics statistics = statisticsRequest.MapToDomain();
         statistics.LastUpdateDateTime=DateTime.Now;
-        return await _statisticsRepository.AddStatAsync(statistics);
+        return await _unitOfWork._StatisticsRepository.AddStatAsync(statistics);
     }
     
     /// <inheritdoc />
     public async Task<IEnumerable<StatisticsResponse>> GetAllStatisticsAsync()
     {
-        var allStatistics = await _statisticsRepository.GetStatsAsync();
+        var allStatistics = await _unitOfWork._StatisticsRepository.GetStatsAsync();
         return allStatistics.MapToContract();
     }
     
     /// <inheritdoc />
     public async Task<StatisticsResponse> GetStatisticsAsync(int id)
     {
-        var isStatExists = await _statisticsRepository.StatExistsAsync(id);
+        var isStatExists = await _unitOfWork._StatisticsRepository.StatExistsAsync(id);
         if (!isStatExists)
         {
             throw new StatisticsNotFoundException(id);
         }
-        var statistics = await _statisticsRepository.GetStatAsync(id);
+        var statistics = await _unitOfWork._StatisticsRepository.GetStatAsync(id);
         return statistics.MapToContract();
     }
     
     /// <inheritdoc />
     public async Task UpdateStatisticsAsync(int id, StatisticsRequest statisticsRequest)
     {
-        var isStatisticsExists = await _statisticsRepository.StatExistsAsync(id);
+        var isStatisticsExists = await _unitOfWork._StatisticsRepository.StatExistsAsync(id);
         if (!isStatisticsExists)
         {
             throw new StatisticsNotFoundException(id);
@@ -63,18 +56,18 @@ public class StatisticsService : IStatisticsService
         statisticsRequest.Validate();
         Statistics statistics = statisticsRequest.MapToDomain();
         statistics.LastUpdateDateTime = DateTime.Now;;
-        await _statisticsRepository.UpdateStatAsync(id, statistics);
+        await _unitOfWork._StatisticsRepository.UpdateStatAsync(id, statistics);
     }
     
     /// <inheritdoc />
     public async Task DeleteStatisticsAsync(int id)
     {
-        var isStatisticsExists = await _statisticsRepository.StatExistsAsync(id);
+        var isStatisticsExists = await _unitOfWork._StatisticsRepository.StatExistsAsync(id);
         if (!isStatisticsExists)
         {
             throw new StatisticsNotFoundException(id);
         }
 
-        await _statisticsRepository.DeleteStatAsync(id);
+        await _unitOfWork._StatisticsRepository.DeleteStatAsync(id);
     }
 }
