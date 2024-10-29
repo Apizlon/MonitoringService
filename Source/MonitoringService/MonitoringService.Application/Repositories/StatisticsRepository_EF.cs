@@ -3,7 +3,9 @@ using MonitoringService.Application.Models;
 
 namespace MonitoringService.Application.Repositories;
 
-/// <inheritdoc />
+/// <summary>
+/// Старая реализация. Использует in-memory базу данных и EF.
+/// </summary>
 public class StatisticsRepository_EF : IStatisticsRepository
 {
     /// <summary>
