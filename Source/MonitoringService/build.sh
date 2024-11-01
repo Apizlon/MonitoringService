@@ -2,7 +2,7 @@
 
 set -e
 
-PROJECT_NAME="MonitoringApplication"
+PROJECT_NAME="MonitoringService.Host\MonitoringService.Host.csproj"
 SOLUTION_FILE="MonitoringService.sln"
 OUTPUT_DIR="artifacts"
 
