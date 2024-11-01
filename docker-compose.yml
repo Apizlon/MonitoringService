@@ -9,3 +9,31 @@ services:
             - "5341:80"
         volumes:
             - ./Source/MonitoringService/MonitoringService.Host/logs:/data
+    
+    teamcity-server:
+        image: jetbrains/teamcity-server
+        container_name: teamcity-server
+        environment:
+            - TEAMCITY_SERVER_MEM_OPTS=-Xmx2g -XX:ReservedCodeCacheSize=512m
+        volumes:
+            - teamcity_server_data:/data/teamcity_server/datadir
+            - teamcity_server_logs:/opt/teamcity/logs
+        ports:
+            - "8111:8111" # Порт, на котором TeamCity будет доступен
+
+    teamcity-agent:
+        image: jetbrains/teamcity-agent
+        container_name: teamcity-agent
+        environment:
+            - SERVER_URL=http://teamcity-server:8111
+        depends_on:
+            - teamcity-server
+        volumes:
+            - teamcity_agent_conf:/data/teamcity_agent/conf
+        links:
+            - teamcity-server
+
+volumes:
+    teamcity_server_data:
+    teamcity_server_logs:
+    teamcity_agent_conf:
