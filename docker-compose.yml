@@ -23,6 +23,7 @@ services:
 
     teamcity-agent:
         image: jetbrains/teamcity-agent
+        user: root
         container_name: teamcity-agent
         environment:
             - SERVER_URL=http://teamcity-server:8111
