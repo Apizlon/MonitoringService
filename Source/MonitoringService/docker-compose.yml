@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:latest
+    enviroment:
+      POSTGRES_DB: StatisticsService
+      POSGRES_USER: postgres
+      POSGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  statisticsService:
+    image: MonitoringService:dev-build
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev-build
+    ports:
+    - "5000:80"
+    depends_on:
+      - postgres
+    environment:
+      - ConnectionStrings__StatisticsDatabaseConnection: "Host=localhost;Port=5432;Database=StatisticsService;Username=postgres;Password=postgres"
