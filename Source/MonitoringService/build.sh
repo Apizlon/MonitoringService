@@ -11,7 +11,7 @@ fi
 
 #Установка переменных
 TARGET=$1
-IMAGE_NAME="MonitoringService:$TARGET"
+IMAGE_NAME="monitoring-service-$TARGET"
 
 #Выполняем сборку на основе переданного аргумента
 case $TARGET in
@@ -25,8 +25,6 @@ case $TARGET in
         ;;
     dev-build)
         echo "Сборка образа для разработки..."
-        docker build --target dev-build -t "$IMAGE_NAME" .
-
         docker-compose up --build
         ;;
     *)
