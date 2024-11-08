@@ -1,6 +1,7 @@
 using System.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 
 namespace MonitoringService.Application.Extensions;
@@ -14,7 +15,8 @@ public static class DbContextExtension
             : configuration.GetSection("ConnectionStrings")["StatisticsDatabaseConnection"];
         if (string.IsNullOrEmpty(connectionString))
         {
-            throw new Exception("Ошибка.Пустая строка подключения");
+            Console.WriteLine("Внимание!Пустая строка подключения");
+            return services;
         }
         return services.AddScoped<IDbConnection>(sp => new NpgsqlConnection(connectionString));
     }

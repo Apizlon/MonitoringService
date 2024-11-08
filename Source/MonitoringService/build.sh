@@ -22,6 +22,10 @@ case $TARGET in
     docs)
         echo "Сборка образа для генерации документации..."
         docker build --target docs -t "$IMAGE_NAME" .
+        CONTAINER_ID=$(docker create $IMAGE_NAME)
+        docker cp $CONTAINER_ID:/app/artifacts ./artifacts
+        docker rm $CONTAINER_ID
+        echo "Артефакты извлечены в ./artifacts"
         ;;
     dev-build)
         echo "Сборка образа для разработки..."
