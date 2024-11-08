@@ -19,20 +19,22 @@ services:
             - teamcity_server_data:/data/teamcity_server/datadir
             - teamcity_server_logs:/opt/teamcity/logs
         ports:
-            - "8111:8111" # Порт, на котором TeamCity будет доступен
+            - "8111:8111"
 
     teamcity-agent:
-        image: jetbrains/teamcity-agent
+        image: jetbrains/teamcity-agent:latest
         user: root
         container_name: teamcity-agent
         environment:
             - SERVER_URL=http://teamcity-server:8111
+            - DOCKER_IN_DOCKER=start
         depends_on:
             - teamcity-server
         volumes:
             - teamcity_agent_conf:/data/teamcity_agent/conf
         links:
             - teamcity-server
+        privileged: true
 
 volumes:
     teamcity_server_data:
