@@ -27,6 +27,11 @@ builder.Services.AddCors(options =>
 builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddControllers();
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.Title = "My api";
+    config.Version = "v1";
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //builder.Services.AddDbContext<StatisticsDbContext>();
@@ -51,6 +56,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseOpenApi();
 
 app.UseCors("AllowAllOrigin");
 app.UseMiddleware<CustomExceptionHandlingMiddleware>();
