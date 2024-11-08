@@ -26,6 +26,10 @@ case $TARGET in
     dev-build)
         echo "Сборка образа для разработки..."
         docker build --target dev-build -t "$IMAGE_NAME" .
+        CONTAINER_ID=$(docker create $IMAGE_NAME)
+        docker cp $CONTAINER_ID:/app/artifacts ./artifacts
+        docker rm $CONTAINER_ID
+        echo "Артефакты извлечены в ./artifacts"
         ;;
     *)
         echo "Неизвестный тип сборки: $TARGET"

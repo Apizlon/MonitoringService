@@ -20,5 +20,5 @@ FROM test AS docs
 
 FROM restore AS dev-build
 COPY . .
-RUN dotnet publish --no-restore --configuration Release
+RUN dotnet publish --no-restore --configuration Release -o /app/artifacts
 ENTRYPOINT [ "dotnet", "MonitoringService.Host.dll" ]
