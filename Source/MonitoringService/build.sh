@@ -25,7 +25,7 @@ case $TARGET in
         ;;
     dev-build)
         echo "Сборка образа для разработки..."
-        docker compose up --build
+        docker build --target dev-build -t "$IMAGE_NAME" .
         ;;
     *)
         echo "Неизвестный тип сборки: $TARGET"
