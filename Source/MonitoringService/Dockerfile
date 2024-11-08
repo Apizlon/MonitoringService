@@ -14,7 +14,7 @@ RUN dotnet restore
 FROM restore AS test
 COPY . .
 RUN dotnet build --no-restore --configuration Release
-CMD dotnet test MonitoringService.Tests/bin/Release/net8.0/MonitoringService.Tests.dll
+CMD dotnet test MonitoringService.Tests/bin/Release/net8.0/MonitoringService.Tests.dll --logger "console;verbosity=detailed"
 
 FROM test AS docs
 
