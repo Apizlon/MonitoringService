@@ -11,14 +11,22 @@ namespace MonitoringService.Application.Repositories;
 /// <inheritdoc />
 public class StatisticsRepository : IStatisticsRepository
 {
+    /// <see cref="IDbConnection"/>
     private readonly IDbConnection _connection;
+
+    /// <see cref="IDbTransaction"/>
     private IDbTransaction _transaction;
     
+    /// <summary>
+    /// Конструктор с одним параметром
+    /// </summary>
+    /// <param name="connection"><see cref="IDbConnection"/></param>
     public StatisticsRepository(IDbConnection connection)
     {
         _connection = connection;
     }
     
+    /// <inheritdoc />
     public void SetTransaction(IDbTransaction transaction)
     {
         _transaction = transaction;

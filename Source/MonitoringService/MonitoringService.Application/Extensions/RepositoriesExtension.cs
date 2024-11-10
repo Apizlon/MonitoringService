@@ -20,7 +20,10 @@ public static class RepositoriesExtension
             .AddScoped<IStatisticsRepository, StatisticsRepository>()
             .AddScoped<IEventRepository, EventRepository>();
     }
-
+    
+    /// <summary>
+    /// Метод для применения миграций
+    /// </summary>
     public static IServiceCollection AddMigration(this IServiceCollection services, IConfiguration configuration)
     {
         string dbConnection = string.IsNullOrEmpty(configuration.GetSection("ConnectionStrings")["StatisticsDatabaseConnection"]) 

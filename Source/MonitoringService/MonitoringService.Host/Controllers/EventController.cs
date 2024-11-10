@@ -4,19 +4,37 @@ using MonitoringService.Contracts;
 
 namespace MonitoringService.Host.Controllers;
 
+/// <summary>
+/// Api для получения информации о событиях
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class EventController : ControllerBase
 {
+    /// <see cref="EventProcessor"/>
     private readonly EventProcessor _eventProcessor;
+    
+    /// <summary>
+    /// Логгер
+    /// </summary>
     private readonly ILogger<EventController> _logger;
-
+    
+    /// <summary>
+    /// Конструктор с двумя параметрами
+    /// </summary>
+    /// <param name="eventProcessor"><see cref="EventProcessor"/></param>
+    /// <param name="logger">Логгер</param>
     public EventController(EventProcessor eventProcessor,ILogger<EventController> logger)
     {
         _eventProcessor = eventProcessor;
         _logger = logger;
     }
-
+    
+    /// <summary>
+    /// Endpoint добавления события
+    /// </summary>
+    /// <param name="eventRequest"><see cref="EventRequest"/></param>
+    /// <returns>id добавленного события</returns>
     [HttpPost]
     public async Task<IActionResult> AddEvent([FromBody] EventRequest eventRequest)
     {
@@ -25,7 +43,11 @@ public class EventController : ControllerBase
         _logger.LogInformation($"Событие добавлено, его id {id}");
         return Ok(id);
     }
-
+    
+    /// <summary>
+    /// Endpoint получения события по id
+    /// </summary>
+    /// <param name="id">id события</param>
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetEvent(Guid id)
     {
@@ -34,7 +56,12 @@ public class EventController : ControllerBase
         _logger.LogInformation("Событие успешно получено");
         return Ok(statEvent);
     }
-
+    
+    /// <summary>
+    /// Endpoint обновления события
+    /// </summary>
+    /// <param name="id">id события</param>
+    /// <param name="eventRequest"><see cref="EventRequest"/></param>
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateEvent(Guid id,[FromBody] EventRequest eventRequest)
     {
@@ -44,6 +71,10 @@ public class EventController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Endpoint Удаления события
+    /// </summary>
+    /// <param name="id">id удаляемого объекта</param>
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteEvent(Guid id)
     {

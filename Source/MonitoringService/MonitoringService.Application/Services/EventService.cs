@@ -7,15 +7,22 @@ using MonitoringService.Contracts;
 
 namespace MonitoringService.Application.Services;
 
+/// <inheritdoc />
 public class EventService : IEventService
 {
+    /// <see cref="UnitOfWork"/>
     private readonly IUnitOfWork _unitOfWork;
     
+    /// <summary>
+    /// Конструктор с 1 параметром
+    /// </summary>
+    /// <param name="unitOfWork"><see cref="UnitOfWork"/></param>
     public EventService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
-
+    
+    /// <inheritdoc />
     public async Task<Guid> AddEventAsync(EventRequest eventRequest)
     {
         try
@@ -44,7 +51,8 @@ public class EventService : IEventService
             throw;
         }
     }
-
+    
+    /// <inheritdoc />
     public async Task DeleteEventAsync(Guid id)
     {
         bool eventExists = await _unitOfWork._EventRepository.EventExistsAsync(id);
@@ -55,7 +63,8 @@ public class EventService : IEventService
 
         await _unitOfWork._EventRepository.DeleteEventAsync(id);
     }
-
+    
+    /// <inheritdoc />
     public async Task<EventResponse> GetEventAsync(Guid id)
     {
         bool eventExists = await _unitOfWork._EventRepository.EventExistsAsync(id);
@@ -67,7 +76,8 @@ public class EventService : IEventService
         var eventResponse = await _unitOfWork._EventRepository.GetEventAsync(id);
         return eventResponse.MapToContract();
     }
-
+    
+    /// <inheritdoc />
     public async Task<IEnumerable<EventResponse>> GetEventsByStatisticsIdAsync(int statisticsId)
     {
         bool statExists = await _unitOfWork._StatisticsRepository.StatExistsAsync(statisticsId);
@@ -79,7 +89,8 @@ public class EventService : IEventService
         var events = await _unitOfWork._EventRepository.GetEventsByStatisticsIdAsync(statisticsId);
         return events.MapToContract();
     }
-
+    
+    /// <inheritdoc />
     public async Task UpdateEventAsync(Guid id, EventRequest eventRequest)
     {
         try

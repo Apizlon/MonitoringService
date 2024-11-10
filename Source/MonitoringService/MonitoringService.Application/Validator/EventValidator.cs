@@ -3,8 +3,17 @@ using MonitoringService.Contracts;
 
 namespace MonitoringService.Application.Validator;
 
+/// <summary>
+/// Класс для валидации входящих запросов типа <see cref="EventRequest"/>>
+/// </summary>
 public static class EventValidator
 {
+    /// <summary>
+    /// Метод расширения для валидации
+    /// </summary>
+    /// <param name="eventRequest">Объект <see cref="EventRequest"/>> входящего запроса</param>
+    /// <returns><see cref="EventRequest"/></returns>
+    /// <exception cref="BadRequestException"><see cref="BadRequestException"/>></exception>
     public static EventRequest Validate(this EventRequest eventRequest)
     {
         if (string.IsNullOrEmpty(eventRequest.Name))

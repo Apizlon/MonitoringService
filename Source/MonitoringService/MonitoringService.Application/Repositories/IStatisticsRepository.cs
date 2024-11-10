@@ -25,6 +25,7 @@ public interface IStatisticsRepository
     /// Получение объекта по id
     /// </summary>
     /// <param name="id">id</param>
+    /// <returns><see cref="Statistics"/></returns>
     Task<Statistics> GetStatAsync(int id);
     
     /// <summary>
@@ -54,5 +55,9 @@ public interface IStatisticsRepository
     /// <param name="id">id искомого объекта</param>
     Task<bool> StatExistsAsync(int id);
     
+    /// <summary>
+    /// Установка транзакции
+    /// </summary>
+    /// <param name="transaction">объекта <see cref="IDbTransaction"/></param>
     void SetTransaction(IDbTransaction transaction);
 }

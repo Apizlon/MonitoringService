@@ -11,10 +11,9 @@ namespace MonitoringService.Host.Controllers;
 [Route("api/[controller]")]
 public class StatisticsController : ControllerBase
 {
-    /// <summary>
     /// <see cref="StatisticsProcessor"/>>
-    /// </summary>
     private readonly StatisticsProcessor _statisticsProcessor;
+    
     /// <summary>
     /// Логгер
     /// </summary>
@@ -64,7 +63,6 @@ public class StatisticsController : ControllerBase
     /// </summary>
     /// <param name="id">id обновляемого элемента</param>
     /// <param name="statisticsRequest"><see cref="StatisticsRequest"/></param>
-    /// <returns></returns>
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateStatistics(int id,[FromBody] StatisticsRequest statisticsRequest)
     {
