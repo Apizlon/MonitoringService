@@ -1,5 +1,5 @@
 group "default" {
-  targets = ["test", "docs", "dev-build"]
+  targets = ["dev-build"]
 }
 
 target "test" {
