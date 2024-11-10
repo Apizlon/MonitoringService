@@ -10,8 +10,13 @@ namespace MonitoringService.Application.Services;
 /// <inheritdoc />
 public class StatisticsService : IStatisticsService
 {
+    /// <see cref="UnitOfWork"/>
     private readonly IUnitOfWork _unitOfWork;
     
+    /// <summary>
+    /// Конструктор с 1 параметром
+    /// </summary>
+    /// <param name="unitOfWork"><see cref="UnitOfWork"/></param>
     public StatisticsService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;

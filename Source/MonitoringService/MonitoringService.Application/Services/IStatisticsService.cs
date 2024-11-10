@@ -12,6 +12,7 @@ public interface IStatisticsService
     /// Добавление статистики
     /// </summary>
     /// <param name="statisticsRequest"><see cref="StatisticsRequest"/>></param>
+    /// <returns>id добавленной статистики</returns>
     Task<int> AddStatisticsAsync(StatisticsRequest statisticsRequest);
     
     /// <summary>

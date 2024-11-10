@@ -13,11 +13,10 @@ namespace MonitoringService.Host.Controllers;
 [EnableCors("AllowAllOrigins")]
 public class ViewController : ControllerBase
 {
-    /// <summary>
     /// <see cref="StatisticsProcessor"/>
-    /// </summary>
     private readonly StatisticsProcessor _statisticsProcessor;
-
+    
+    /// <see cref="EventProcessor"/>
     private readonly EventProcessor _eventProcessor;
     
     /// <summary>
@@ -26,7 +25,7 @@ public class ViewController : ControllerBase
     private readonly ILogger<ViewController> _logger;
     
     /// <summary>
-    /// Конструктор контроллера с 2 параметрами
+    /// Конструктор контроллера с 3 параметрами
     /// </summary>
     /// <param name="statisticsProcessor"><see cref="StatisticsProcessor"/></param>
     /// <param name="eventProcessor"><see cref="EventProcessor"/></param>
@@ -50,7 +49,12 @@ public class ViewController : ControllerBase
         _logger.LogInformation("Статистика успешно получена");
         return Ok(allStatistics);
     }
-
+    
+    /// <summary>
+    /// Endpoint для получения всех событий для конкретного устройства(статистики)
+    /// </summary>
+    /// <param name="id">id устройства(статистики)</param>
+    /// <returns>IEnumerable объектов типа <see cref="EventResponse"/></returns>
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetEventsByStatisticsId(int id)
     {

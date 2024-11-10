@@ -2,9 +2,15 @@ using FluentMigrator;
 
 namespace MonitoringService.Application.Migrations;
 
+/// <summary>
+/// Миграция для добавлния таблицы с событиями
+/// </summary>
 [Migration(2024102500)]
 public class AddEventTable : Migration
 {
+    /// <summary>
+    /// Вызывается при применении миграции
+    /// </summary>
     public override void Up()
     {
         Create.Table("Events")
@@ -18,7 +24,10 @@ public class AddEventTable : Migration
             .ToTable("Statistics").PrimaryColumn("Id")
             .OnDeleteOrUpdate(System.Data.Rule.Cascade);
     }
-
+    
+    /// <summary>
+    /// Вызывается при откате миграции
+    /// </summary>
     public override void Down()
     {
         Delete.Table("Events");

@@ -9,9 +9,7 @@ namespace MonitoringService.Application.Processors;
 /// </summary>
 public class StatisticsProcessor
 {
-    /// <summary>
     /// <see cref="StatisticsService"/>
-    /// </summary>
     private readonly IStatisticsService _statisticsService;
 
     /// <summary>

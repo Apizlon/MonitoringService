@@ -1,38 +1,37 @@
 #!/bin/bash
 
-#Прекращаем выполнение при ошибке
+# Прекращаем выполнение при ошибке
 set -e
 
-#Проверка, передан ли аргумент
+# Проверка, передан ли аргумент
 if [ -z "$1" ]; then
-echo "Необходимо передать аргумент: test, docs или dev-build"
-exit 1
+    echo "Необходимо передать аргумент: test, docs или dev-build"
+    exit 1
 fi
 
-#Установка переменных
+# Установка переменной TARGET
 TARGET=$1
-IMAGE_NAME="monitoring-service-$TARGET"
 
-#Выполняем сборку на основе переданного аргумента
+# Выполняем сборку на основе переданного аргумента
 case $TARGET in
     test)
         echo "Сборка тестового образа..."
-        docker build --target test -t "$IMAGE_NAME" .
+        docker buildx bake test
         ;;
     docs)
         echo "Сборка образа для генерации документации..."
-        docker build --target docs -t "$IMAGE_NAME" .
-        CONTAINER_ID=$(docker create $IMAGE_NAME)
-        docker cp $CONTAINER_ID:/app/artifacts ./artifacts
-        docker rm $CONTAINER_ID
+        docker buildx bake docs
+        CONTAINER_ID=$(docker create monitoring-service-docs)
+        docker cp "$CONTAINER_ID":/app/artifacts ./artifacts
+        docker rm "$CONTAINER_ID"
         echo "Артефакты извлечены в ./artifacts"
         ;;
     dev-build)
         echo "Сборка образа для разработки..."
-        docker build --target dev-build -t "$IMAGE_NAME" .
-        CONTAINER_ID=$(docker create $IMAGE_NAME)
-        docker cp $CONTAINER_ID:/app/artifacts ./artifacts
-        docker rm $CONTAINER_ID
+        docker buildx bake dev-build
+        CONTAINER_ID=$(docker create monitoring-service-dev-build)
+        docker cp "$CONTAINER_ID":/app/artifacts ./artifacts
+        docker rm "$CONTAINER_ID"
         echo "Артефакты извлечены в ./artifacts"
         ;;
     *)
@@ -42,4 +41,4 @@ case $TARGET in
         ;;
 esac
 
-echo "Сборка завершена. Образ создан: $IMAGE_NAME"
+echo "Сборка завершена."
